@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 """
-Created on Sat Mar 21 21:16:42 2020
-
 @author: Vivek Rathi
 """
 #import packages
@@ -22,15 +20,15 @@ n_face_path = '../non_face/Nonface16'
 
 # create list of images (unflattened)
 def create_list_images(path):
-    List_images = []
+    list_images = []
     for imagepath in tqdm(glob.glob(path + '\*')):
         image = cv2.imread(imagepath,0)
         image = image/255
-        List_images.append(image.astype(np.float32))
-        if len(List_images) == 1200:
+        list_images.append(image.astype(np.float32))
+        if len(list_images) == 1200:
             break
-        random.shuffle(List_images)
-    return List_images
+        random.shuffle(list_images)
+    return list_images
 
 # get haar features
 def haar_feature(img,feature_type_):
@@ -144,9 +142,9 @@ def adaboost(input_xi,threshold,N):
     #adaboost
     maxT = 100
     num_images = 2*N
+    #these depends on no. of your haar feature
     weights = np.ones(num_images) / num_images
     
-    #these depends on no. of your haar feature
     # epsilon_t, hxinoty, hxi
     error_t = np.zeros(input_xi.shape[1])
     bool_t = input_xi >= threshold
