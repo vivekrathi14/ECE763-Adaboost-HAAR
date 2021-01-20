@@ -47,12 +47,12 @@ def visualize_haar_f_kernel(img,f_type):
     # pt(x,y) image(y,x)
     point_coord = [[(c2[1],c2[0]) for c1 in c for c2 in c1] for c in coord_array]
     for p in point_coord:
-        img_ = np.ones((img.shape[0],img.shape[1])).astype('uint8')
-        img_ = img_* 127
-        img_ = cv2.rectangle(img_,p[0],p[1],255,-1)
-        img_ = cv2.rectangle(img_,p[2],p[3],0,-1)
+        img_v = np.ones((img.shape[0],img.shape[1])).astype('uint8')
+        img_v = img_v* 127
+        img_v = cv2.rectangle(img_v,p[0],p[1],255,-1)
+        img_v = cv2.rectangle(img_v,p[2],p[3],0,-1)
         cv2.namedWindow('Image',cv2.WINDOW_NORMAL)
-        cv2.imshow('Image',img_)
+        cv2.imshow('Image',img_v)
         cv2.waitKey(500)
         cv2.destroyAllWindows()
         
@@ -62,57 +62,61 @@ def visualize_haar_f_s(img,index,f_type):
 #    coord_array = np.asarray(coord)
     c = coord[index]
     p = [(c2[1],c2[0]) for c1 in c for c2 in c1]
-    img_ = np.copy(img)
+    img_c = np.copy(img)
     if len(p)==4:
-        img_ = cv2.rectangle(img_,p[0],p[1],1,-1)
-        img_ = cv2.rectangle(img_,p[2],p[3],0,-1)
+        img_c = cv2.rectangle(img_c,p[0],p[1],1,-1)
+        img_c = cv2.rectangle(img_c,p[2],p[3],0,-1)
     elif len(p)==6:
-        img_ = cv2.rectangle(img_,p[0],p[1],1,-1)
-        img_ = cv2.rectangle(img_,p[2],p[3],0,-1)
-        img_ = cv2.rectangle(img_,p[4],p[5],1,-1)
+        img_c = cv2.rectangle(img_c,p[0],p[1],1,-1)
+        img_c = cv2.rectangle(img_c,p[2],p[3],0,-1)
+        img_c = cv2.rectangle(img_c,p[4],p[5],1,-1)
     elif len(p)==8:
-        img_ = cv2.rectangle(img_,p[0],p[1],1,-1)
-        img_ = cv2.rectangle(img_,p[2],p[3],0,-1)
-        img_ = cv2.rectangle(img_,p[4],p[5],1,-1)
-        img_ = cv2.rectangle(img_,p[6],p[7],0,-1)
+        img_c = cv2.rectangle(img_c,p[0],p[1],1,-1)
+        img_c = cv2.rectangle(img_c,p[2],p[3],0,-1)
+        img_c = cv2.rectangle(img_c,p[4],p[5],1,-1)
+        img_c = cv2.rectangle(img_c,p[6],p[7],0,-1)
     cv2.namedWindow('Image',cv2.WINDOW_NORMAL)
-    cv2.imshow('Image',img_)
+    cv2.imshow('Image',img_c)
     cv2.waitKey(5000)
     cv2.destroyAllWindows()
 
 # visualize haar features on an image 
 def visualize_haar_f(img,c):
     p = [(c2[1],c2[0]) for c1 in c for c2 in c1]
-    img_ = np.copy(img)
+    img_c = np.copy(img)
     if len(p)==4:
-        img_ = cv2.rectangle(img_,p[0],p[1],1,-1)
-        img_ = cv2.rectangle(img_,p[2],p[3],0,-1)
+        img_c = cv2.rectangle(img_c,p[0],p[1],1,-1)
+        img_c = cv2.rectangle(img_c,p[2],p[3],0,-1)
     elif len(p)==6:
-        img_ = cv2.rectangle(img_,p[0],p[1],1,-1)
-        img_ = cv2.rectangle(img_,p[2],p[3],0,-1)
-        img_ = cv2.rectangle(img_,p[4],p[5],1,-1)
+        img_c = cv2.rectangle(img_c,p[0],p[1],1,-1)
+        img_c = cv2.rectangle(img_c,p[2],p[3],0,-1)
+        img_c = cv2.rectangle(img_c,p[4],p[5],1,-1)
     elif len(p)==8:
-        img_ = cv2.rectangle(img_,p[0],p[1],1,-1)
-        img_ = cv2.rectangle(img_,p[2],p[3],0,-1)
-        img_ = cv2.rectangle(img_,p[4],p[5],1,-1)
-        img_ = cv2.rectangle(img_,p[6],p[7],0,-1)
+        img_c = cv2.rectangle(img_c,p[0],p[1],1,-1)
+        img_c = cv2.rectangle(img_c,p[2],p[3],0,-1)
+        img_c = cv2.rectangle(img_c,p[4],p[5],1,-1)
+        img_c = cv2.rectangle(img_c,p[6],p[7],0,-1)
     cv2.namedWindow('Image',cv2.WINDOW_NORMAL)
-    cv2.imshow('Image',img_)
+    cv2.imshow('Image',img_c)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
 # get all haar parameters    
 def h_f_param(data_f,data_nf,f_type):
-#    N = len(data_f)
-    hf_data_f = h_feature_list(data_f,f_type)
-    hf_data_nf = h_feature_list(data_nf,f_type)
+    hf_data_f = h_feature_list(data_f,f_type) # haar feature for face images
+    hf_data_nf = h_feature_list(data_nf,f_type) # haar feature for non face imag|----Haar Features-----|
+#         input vector visualization
+#           ---Haar Features---
+#          I  [ h1 h2 h3 h4 ] --> x1
+#          M  [ h1 h2 h3 h4 ] --> x2
+#          G  [ h1 h2 h3 h4 ] --> x3
+
     input_ada_xi = np.vstack((hf_data_f,hf_data_nf))
     
     # get threshold using mean logic
-    mean_hf_f = hf_data_f.mean(axis=0)
-    hf_data_nf = h_feature_list(data_nf,f_type)
+    mean_hf_f = hf_data_f.mean(axis=0) # sum along vertcially --> [h1 h2 h3 h4]
     mean_hf_nf = hf_data_nf.mean(axis=0)
-    thres = (mean_hf_f + mean_hf_nf)/2
+    thres = (mean_hf_f + mean_hf_nf)/2 # get mean threshold vector --> [h1m h2m h3m h4m]
     
 #    thres = get_threshold(hf_data_f[100:200],hf_data_nf[100:200],N)
     return thres, input_ada_xi
@@ -122,46 +126,50 @@ def get_threshold(hf_data,hnf_data,N):
     input_xi = np.vstack((hf_data,hnf_data))
     e_list = []
     for x in tqdm(input_xi):
-        bool_ = input_xi >= x
-        a_ = np.vstack((np.where(bool_[:N,:]==False,1,0),\
-                               np.where(~bool_[N:,:]==False,1,0)))
-        e_list.append(a_.sum(axis=0))
+        bool_t = input_xi >= x
+        a_t = np.vstack((np.where(bool_t[:N,:]==False,1,0),\
+                               np.where(~bool_t[N:,:]==False,1,0)))
+        e_list.append(a_t.sum(axis=0))
     e_a = np.asarray(e_list)
     
-    max_acc_rows = np.argsort(e_a,axis=0)[0]
+    max_acc_rows = np.argsort(e_a,axis=0)[-1]  # argsort gives index of sorted array
     thres = [input_xi[row][i] for i,row in tqdm(enumerate(max_acc_rows))]
     
     return np.asarray(thres)
 
 # Adaboost algorithm
 def adaboost(input_xi,threshold,N):
-    y_face_data = np.ones(N)
+    # create output for N images
+    y_face_data = np.ones(N) # row vetcor --> [1 1 1 1]
     y_n_face_data = np.ones(N)
-    output_yi = np.hstack((y_face_data,y_n_face_data*-1))
+    # create output array                                 #                 face       non-face
+    output_yi = np.hstack((y_face_data,y_n_face_data*-1)) # row vercor --> [1 1 1 ... -1 -1 -1 ...]
     
     #adaboost
-    maxT = 100
+    maxT = 100 # maximum iterations (change it to 10 for top 10 haar features)
     num_images = 2*N
     #these depends on no. of your haar feature
-    weights = np.ones(num_images) / num_images
+    weights = np.ones(num_images) / num_images # row vector
     
     # epsilon_t, hxinoty, hxi
-    error_t = np.zeros(input_xi.shape[1])
-    bool_t = input_xi >= threshold
+    error_t = np.zeros(input_xi.shape[1]) # row vector --> [eh1 eh2 eh3 eh4] (size of haar feature vector for an image)
+    bool_t = input_xi >= threshold # matrix --> no. of images x no. of haar features
     
+    # get incorrect samples
     h_x_not_y = np.vstack((np.where(bool_t[:N,:]==False,1,0*bool_t[:N,:]),\
                            np.where(~bool_t[N:,:]==False,1,0*~bool_t[N:,:])))
     
+    # get correct samples
     h_x = np.vstack((np.where(bool_t[:N,:]==False,-1,1*bool_t[:N,:]),\
                            np.where(~bool_t[N:,:]==False,1,-1*~bool_t[N:,:])))
-    hf_i = []
+    hf_i = [] # haar feature array
     hf_a = []
     alpha = []
     z_t = 0
     #iterate
     for t in range(maxT):
-        error_t = np.dot(weights,h_x_not_y)
-        ht = np.argsort(error_t)[0]
+        error_t = np.dot(weights,h_x_not_y) # calculate error
+        ht = np.argsort(error_t)[0] # get haarfeature index with least error (trick to get top 10b haar features)
         print("Iteration {} - {}".format(t+1,ht))
         hf_i.append(ht)
         et_ht = error_t[ht]
@@ -173,7 +181,7 @@ def adaboost(input_xi,threshold,N):
         weights = np.multiply(weights,np.exp(power)) / z_t
         hf_a.append(input_xi[:,ht])
         Fx = np.dot(alpha,hf_a)
-        Hx = np.sign(Fx)
+        Hx = np.sign(Fx) # signum function (positive and negative)
         neg = (np.sum(Hx != output_yi))
         print("error -{}, alpha-{}, zt-{}".format(neg,alpha_t,z_t))
         
