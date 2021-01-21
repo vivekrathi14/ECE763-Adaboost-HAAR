@@ -56,46 +56,18 @@ def visualize_haar_f_kernel(img,f_type):
         cv2.waitKey(500)
         cv2.destroyAllWindows()
         
-# visualize your best haar features of specified type on image
-def visualize_haar_f_s(img,index,f_type):
-    coord,_ = haar_like_feature_coord(img.shape[0], img.shape[1],f_type)
-#    coord_array = np.asarray(coord)
-    c = coord[index]
-    p = [(c2[1],c2[0]) for c1 in c for c2 in c1]
-    img_c = np.copy(img)
-    if len(p)==4:
-        img_c = cv2.rectangle(img_c,p[0],p[1],1,-1)
-        img_c = cv2.rectangle(img_c,p[2],p[3],0,-1)
-    elif len(p)==6:
-        img_c = cv2.rectangle(img_c,p[0],p[1],1,-1)
-        img_c = cv2.rectangle(img_c,p[2],p[3],0,-1)
-        img_c = cv2.rectangle(img_c,p[4],p[5],1,-1)
-    elif len(p)==8:
-        img_c = cv2.rectangle(img_c,p[0],p[1],1,-1)
-        img_c = cv2.rectangle(img_c,p[2],p[3],0,-1)
-        img_c = cv2.rectangle(img_c,p[4],p[5],1,-1)
-        img_c = cv2.rectangle(img_c,p[6],p[7],0,-1)
-    cv2.namedWindow('Image',cv2.WINDOW_NORMAL)
-    cv2.imshow('Image',img_c)
-    cv2.waitKey(5000)
-    cv2.destroyAllWindows()
 
 # visualize haar features on an image 
 def visualize_haar_f(img,c):
     p = [(c2[1],c2[0]) for c1 in c for c2 in c1]
     img_c = np.copy(img)
-    if len(p)==4:
-        img_c = cv2.rectangle(img_c,p[0],p[1],1,-1)
-        img_c = cv2.rectangle(img_c,p[2],p[3],0,-1)
-    elif len(p)==6:
-        img_c = cv2.rectangle(img_c,p[0],p[1],1,-1)
-        img_c = cv2.rectangle(img_c,p[2],p[3],0,-1)
-        img_c = cv2.rectangle(img_c,p[4],p[5],1,-1)
-    elif len(p)==8:
-        img_c = cv2.rectangle(img_c,p[0],p[1],1,-1)
-        img_c = cv2.rectangle(img_c,p[2],p[3],0,-1)
-        img_c = cv2.rectangle(img_c,p[4],p[5],1,-1)
-        img_c = cv2.rectangle(img_c,p[6],p[7],0,-1)
+    j = 0 # index
+    for i in range(len(p)//2):
+        if i%2 == 0:
+            img_c = cv2.rectangle(img_c,p[j],p[j+1],1,-1)
+        else:
+            img_c = cv2.rectangle(img_c,p[j],p[j+1],0,-1)
+        j+=2
     cv2.namedWindow('Image',cv2.WINDOW_NORMAL)
     cv2.imshow('Image',img_c)
     cv2.waitKey(0)
