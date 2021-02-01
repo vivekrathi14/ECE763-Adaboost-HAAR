@@ -1,7 +1,7 @@
 # ECE763 Adaboost-HAAR
 
 **Subject** - ECE 763 Computer Vision <br>
-**Project Name** - Adaptive Boosting (Adaboost) for Face Detection. <br>
+**Project Name** - Adaptive Boosting (Adaboost) for Face Classification. <br>
 **Project Grade** - A+ <br>
 
 **Description** -
